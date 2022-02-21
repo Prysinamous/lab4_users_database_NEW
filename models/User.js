@@ -45,17 +45,24 @@ const AddressSchema = new mongoose.Schema({
         type: String,
     },
 
-    city:
-    {
+    city: {
         type: String,
-        match: [/^[a-zA-Z ]*$/, "hi only spaces and leters~"]
+        validate: function(value)
+        {
+            var city = /^[a-zA-Z\s]*$/
+            return city.test(value)
+        }
     },
 
-    zipcode:
+    zipcode: 
     {
         type: String,
-        match:[/[0-9]{5}-[0-9]{4}$/, "HAUU pls only DDD-DDD format please"]
-    },
+        validate: function(value)
+        {
+            var zippy = /\d{5}-\d{4}/
+            return zippy.test(value)
+        }
+    }
     
 })
 
@@ -77,14 +84,22 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please enter valid email format"]   
-  },
+    validate: function(value)
+    {
+        var email = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+        return email.test(value)
+    }
+},
 
   phone:
   {
       type: String,
       required: true,
-      match: [/[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "Use the valid phone format pls!"]
+      validate: function(value)
+      {
+        var phone = [/[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/, "Use the valid phone format pls!"]
+        return phone.test(value)
+    }
   },
 
   website:
